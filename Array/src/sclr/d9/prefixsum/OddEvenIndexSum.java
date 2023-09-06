@@ -24,9 +24,10 @@ public class OddEvenIndexSum {
     public static void main(String[] args){
 
         //int[] A = {2, 5, 7, 8, 9};
-        //int[] A = {1,1,1};
-        int[] A = {2,1,6, 4};
+        int[] A = {1,1,1};
+        //int[] A = {2,1,6, 4};
         System.out.println(solve(A));
+        System.out.println(solve1(A));
 
     }
 
@@ -85,5 +86,63 @@ public class OddEvenIndexSum {
 
         return count;
 
+    }
+
+
+    /***
+     * Time complexity: O(n)
+     * Space Complexity: O(1)
+     */
+    public static int solve1(int[] A){
+        int count = 0;
+
+        int sizeA = A.length;
+
+        if(sizeA==1) return 1;
+        if(sizeA==2) return 0;
+
+        int sumE = 0;
+        int sumO = 0;
+
+
+        for(int i=0; i< sizeA; i++){
+            if(i%2==0) sumE += A[i];
+            else sumO += A[i];
+        }
+
+        int currOdd = 0;
+        int currEven = A[0];
+
+        int newEvenSum = 0;
+        int newOddSum = 0;
+
+        for(int i=1; i<sizeA-1; i++){
+
+            if(i%2==0){
+                currEven += A[i];
+                newEvenSum += currEven + sumO - currOdd - A[i];
+                newOddSum += currOdd + sumE - currEven;
+
+            }
+            else {
+                currOdd += A[i];
+                newEvenSum += currEven + sumO-currOdd;
+                newOddSum += currOdd + sumE - currEven-A[i];
+
+            }
+            if(newEvenSum == newOddSum) count++;
+        }
+
+
+        if(sumO == sumE - A[0]) count++;
+
+        if(sizeA %2 ==0){
+            if(sumE == sumO-A[sizeA -1])  count++;
+        }
+        else {
+            if(sumO == sumE-A[sizeA-1])  count++;
+        }
+
+        return count;
     }
 }
